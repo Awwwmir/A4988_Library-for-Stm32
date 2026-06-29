@@ -1,0 +1,21 @@
+# Keil Object and Executable Files
+*.o
+*.d
+*.crf
+*.htm
+*.dep
+*.bak
+*.map
+*.lst
+*.hex
+*.bin
+*.axf
+*.lnp
+*.sct
+
+# Keil User Settings and Folders
+*.uvguix.*
+*.uvoptx
+Objects/
+Listings/
+DebugConfig/
