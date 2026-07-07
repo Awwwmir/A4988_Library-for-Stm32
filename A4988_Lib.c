@@ -1,6 +1,21 @@
 #include "A4988_lib.h"
 
 
+
+int pwm_counter=0;
+int pwm_ex=0;
+const float FullStepDegree=1.8;
+float StepMode=FullStepDegree;
+  
+	
+	
+	
+
+
+
+
+
+
 void ChangeStepResoloution(uint32_t stepresoloution)
 	
 {
@@ -125,10 +140,14 @@ void ChangeRotationDirection(uint32_t RotationDirection)
 		float period=1.0/Steps;
 
 		
+		
+		float ArrPreScaller=(1.0/(MicroClock/Pre_Scaller));
+		
+		
 		int ARR=period/ArrPreScaller;
 		
 
-	sprintf(test,"%d",ARR);
+
 		
 	Timer_Pwm->ARR=ARR;
 		
@@ -142,7 +161,7 @@ void ChangeRotationDirection(uint32_t RotationDirection)
 
 
 
-void StopRotateByRm()
+void StopRotateByRm(void)
 {
 	
 
@@ -158,22 +177,37 @@ void StopRotateByRm()
 void StartRotateDegree(uint32_t Degree)
 {
 	
-	Degree=Degree/StepMode;
+	pwm_ex=Degree/StepMode;
+	
+//	char test[200];
+//	LCD_Clear();
+//	sprintf(test,"%d",pwm_ex);
+//	LCD_Puts(0,0,test);
+//	HAL_Delay(2000);
 	
 	
-	for(int k=0;k<Degree;k++)
-	{
+
+	 
+	
+	
+		Timer_Pwm->ARR=65000;
 		
-	HAL_GPIO_WritePin(GPIO_Step_Port,GPIO_Step_Pin,GPIO_PIN_SET);
-  HAL_Delay(100);
+	__HAL_TIM_SetCompare(Timer,Pwm_Channel,32000);
+	__HAL_TIM_ENABLE_IT(&htim2, TIM_IT_UPDATE);
+	HAL_TIM_PWM_Start(Timer,Pwm_Channel);
 	
-	HAL_GPIO_WritePin(GPIO_Step_Port,GPIO_Step_Pin,GPIO_PIN_RESET);
-  HAL_Delay(100);
-		
-	}
 	
+
 }
 	
 	
+	void RotateOneStep(void)
+{
 	
+	pwm_ex=1;
+	__HAL_TIM_ENABLE_IT(Timer, TIM_IT_UPDATE);
+	HAL_TIM_PWM_Start(Timer,Pwm_Channel);
+	
+
+}
 
