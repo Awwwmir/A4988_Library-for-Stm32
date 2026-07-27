@@ -18,7 +18,7 @@
 // Change these based On your Time Congiguration
 #define Timer &htim2
 #define Timer_Pwm TIM2
-#define Pwm_Channel TIM_CHANNEL_2
+#define Pwm_Channel TIM_CHANNEL_4
 
 
 
@@ -38,13 +38,22 @@
 
 
 // Do Not Change this !!!!!
-#define Full_Step_Mode 21
-#define Half_Step_Mode 22	
-#define Quarter_Step_Mode 23
-#define Eighth_Step_Mode 24
-#define Sixteenth_Step_Mode 25
-#define ClockWise        30
-#define CounterClockWise 31
+typedef enum
+{
+    STEP_FULL,
+    STEP_HALF,
+    STEP_QUARTER,
+    STEP_EIGHTH,
+    STEP_SIXTEENTH
+} StepResolution_t;
+
+typedef enum
+{
+    ClockWise_Rotate,
+    CounterClockWise_Rotate
+} RotationDirection_t;
+
+
 
 extern TIM_HandleTypeDef htim2;
 
@@ -56,8 +65,8 @@ extern int pwm_ex;
 
 
 void RotateOneStep(void);
-void ChangeStepResoloution(uint32_t stepresoloution);
-void ChangeRotationDirection(uint32_t RotationDirection);
+void ChangeStepResolution(StepResolution_t stepResolution);
+void ChangeRotationDirection(RotationDirection_t RotationDirection);
 void StartRotateByRm(int Rpm);
 void StopRotateByRm(void);
 void StartRotateDegree(uint32_t Degree);

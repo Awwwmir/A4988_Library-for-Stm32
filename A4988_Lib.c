@@ -1,5 +1,5 @@
 #include "A4988_lib.h"
-
+#include "LCD1602.h"
 
 
 int pwm_counter=0;
@@ -16,14 +16,14 @@ float StepMode=FullStepDegree;
 
 
 
-void ChangeStepResoloution(uint32_t stepresoloution)
+void ChangeStepResolution(StepResolution_t stepResolution)
 	
 {
 	
-	switch(stepresoloution)
+	switch(stepResolution)
 	{
 		
-		case 21:
+		case STEP_FULL:
 			
 		
 		StepMode=FullStepDegree/1;
@@ -36,7 +36,7 @@ void ChangeStepResoloution(uint32_t stepresoloution)
 	
 	break;
 		
-				case 22:
+				case STEP_HALF:
 			
 		
 		StepMode=FullStepDegree/2;
@@ -50,7 +50,7 @@ void ChangeStepResoloution(uint32_t stepresoloution)
 	break;
 				
 				
-						case 23:
+						case STEP_QUARTER:
 			
 		
 		StepMode=FullStepDegree/4;
@@ -64,7 +64,7 @@ void ChangeStepResoloution(uint32_t stepresoloution)
 	break;
 						
 						
-								case 24:
+								case STEP_EIGHTH:
 			
 		
 		StepMode=FullStepDegree/8;
@@ -78,7 +78,7 @@ void ChangeStepResoloution(uint32_t stepresoloution)
 	break;
 								
 								
-										case 25:
+										case STEP_SIXTEENTH:
 			
 		
 		StepMode=FullStepDegree/16;
@@ -108,17 +108,17 @@ void ChangeStepResoloution(uint32_t stepresoloution)
 
 
 
-void ChangeRotationDirection(uint32_t RotationDirection)
+void ChangeRotationDirection(RotationDirection_t RotationDirection)
 {
 	 switch(RotationDirection)
 	 {
-		 case 30:
+		 case ClockWise_Rotate:
 		 
 	HAL_GPIO_WritePin(DirPort,DirPin,GPIO_PIN_SET);
 		 
 		 break;
 		 
-		 case 31:
+		 case CounterClockWise_Rotate:
 		 
 	HAL_GPIO_WritePin(DirPort,DirPin,GPIO_PIN_RESET);
 		 
@@ -146,7 +146,11 @@ void ChangeRotationDirection(uint32_t RotationDirection)
 		
 		int ARR=period/ArrPreScaller;
 		
-
+LCD_Clear();
+	sprintf(test,"%d",ARR);
+	LCD_Puts(0,0,test);
+	HAL_Delay(2000);
+	
 
 		
 	Timer_Pwm->ARR=ARR;
